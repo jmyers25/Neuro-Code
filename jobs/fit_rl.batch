@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#SBATCH -J {TASK_LIST}
+#SBATCH --array=1-78%78
+#SBATCH -p russpold,owners,normal
+#SBATCH --time=03:00:00
+
+# Outputs ----------------------------------
+#SBATCH -o ../../.out/{TASK_LIST}-%A-%a.out
+#SBATCH -e ../../.err/{TASK_LIST}-%A-%a.err
+#SBATCH --mail-user=zenkavi@stanford.edu
+#SBATCH --mail-type=FAIL,END
+# ------------------------------------------
+source /oak/stanford/groups/russpold/users/zenkavi/DevStudy_ServerScripts/setup/dev_study_env.sh
+
+eval $( sed "${SLURM_ARRAY_TASK_ID}q;d" ../.rl_task_lists/{TASK_LIST} )

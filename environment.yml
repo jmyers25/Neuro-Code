@@ -1,0 +1,12 @@
+name: neuro-code
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - theano-pymc
+  - pip
+  - pip:
+      - pymc3

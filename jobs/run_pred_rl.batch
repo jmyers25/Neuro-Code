@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#SBATCH -J pred_rl
+#SBATCH --array=1-12%12
+#SBATCH -p russpold,owners,normal
+#SBATCH --time=01:00:00
+
+# Outputs ----------------------------------
+#SBATCH -o ../../.out/pred_rl-%A-%a.out
+#SBATCH -e ../../.err/pred_rl-%A-%a.err
+#SBATCH --mail-user=zenkavi@stanford.edu
+#SBATCH --mail-type=FAIL,END
+# ------------------------------------------
+source /oak/stanford/groups/russpold/users/zenkavi/DevStudy_ServerScripts/setup/dev_study_env.sh
+eval $( sed "${SLURM_ARRAY_TASK_ID}q;d" pred_rl_task_list.sh )
