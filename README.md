@@ -111,6 +111,9 @@ Neuro-Code/
 - **`pred_rl_task_list.sh`**  
   A task list or orchestrator for batch prediction jobs; often used together with cluster schedulers or GNU parallel.
 
+- **`run_parallel.py`**  
+  Runs get_predicted_df across parameter ranges and repitions by using ProcessPoolExecutor.
+
 ### Cluster jobs: `jobs/`
 
 - **`fit_rl.batch`**  
@@ -147,6 +150,18 @@ python -m neuro_code.predict.predict --input path/to/new_data.csv     --params r
 # Edit jobs/fit_rl.batch to set your conda env/module loads
 sbatch jobs/fit_rl.batch
 ```
+
+### 4) Run Maximum Likelihood Estimation (MLE)
+```bash
+python -m neuro_code.helpers.select_optimal_parameters \
+    --data data/trials.csv \
+    --subject S01 \
+    --pars '{"alpha": null, "beta": null, "lossave": 1.0, "exp": 1.0, "model": "sym_alpha_exp"}' \
+    --n-fits 40 \
+    --save \
+    --out runs/mle \
+    --base-seed 1337
+
 
 ---
 
