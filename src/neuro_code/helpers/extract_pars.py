@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 from typing import Union
 
+from neuro_code.helpers.utils_param_flags import is_fit_marker
+
 def make_pars_dict(pars: Union[str, list]) -> dict:
     """
     Convert a JSON-like string or single-element list into a dictionary, 

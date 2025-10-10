@@ -1,5 +1,16 @@
+# Core scientific stack
 numpy
 pandas
 scipy
+
+# Plotting & analysis
+matplotlib
+tqdm
+
+# Notebook + kernel
+jupyter
+ipykernel
+
+# Probabilistic modeling (optional for advanced fits)
 pymc3
-theano
+theano-pymc

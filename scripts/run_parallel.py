@@ -20,7 +20,7 @@ import numpy as np
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from typing import Dict, Iterable, Tuple, List
 
-from get_predicted_df import get_predicted_df
+from neuro_code.helpers.get_predicted_df import get_predicted_df
 
 
 def make_param_grid(param_ranges: Dict[str, Iterable]) -> List[Dict[str, float]]:

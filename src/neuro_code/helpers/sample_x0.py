@@ -34,30 +34,49 @@ def sample_x0(pars: Dict[str, float]) -> List[float]:
 
     return x0
 
-def get_bounds(pars: Dict[str, float]) -> Tuple[Tuple[float, float], ...]:
-    """
-    Return a tuple of (lower, upper) bounds for all parameters to be fitted (NaN in pars).
+import math
 
-    Args:
-        pars (dict): Parameter dictionary with np.nan for parameters to optimize.
+def _is_fit_value(v) -> bool:
+    # Treat None OR NaN as "fit this"
+    if v is None:
+        return True
+    if isinstance(v, (float, int)):
+        try:
+            return math.isnan(v)  # True only for NaN
+        except Exception:
+            return False
+    return False
 
-    Returns:
-        tuple: A tuple of bounds (min, max) for each free parameter, in the correct order.
+def get_bounds(pars: dict):
     """
+    Return a list of (low, high) bounds aligned with the fitparams order from extract_pars().
+    Defaults shown below; replace with your model-config defaults if you have them centralized.
+    """
+    # Example default bounds; adjust to your model conventions
+    default_bounds = {
+        "alpha":      (0.001, 1.0),
+        "alpha_pos":  (0.001, 1.0),
+        "alpha_neg":  (0.001, 1.0),
+        "beta":       (1e-4,  10.0),
+        "lossave":    (0.1,   2.0),
+        "exp":        (0.5,   2.0),
+        "exp_pos":    (0.5,   2.0),
+        "exp_neg":    (0.5,   2.0),
+    }
+
+    parsed = extract_pars(pars)
+    fitparams = parsed["fitparams"]
+
     bounds = []
+    for key in fitparams:
+        # choose configured bounds if present, else fallback default
+        b = default_bounds.get(key)
+        if b is None:
+            # final fallback to something safe-ish
+            b = (1e-6, 10.0)
+        bounds.append(b)
+    return bounds
 
-    for key in sorted(pars.keys()):
-        if np.isnan(pars[key]):
-            if key in {"alpha", "alpha_neg", "alpha_pos", "exp", "exp_neg", "exp_pos"}:
-                bounds.append((0.05, 2))
-            elif key == "beta":
-                bounds.append((0, 15))
-            elif key == "lossave":
-                bounds.append((0, 10))
-            else:
-                raise ValueError(f"Unknown parameter key: {key}")
-
-    return tuple(bounds)
 
 
 #Need to fix Null handling -- When things are set to null, they are the parameters that should be fit/estimated
